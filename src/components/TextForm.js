@@ -19,6 +19,23 @@ export default function TextForm() {
     setText("");
   };
 
+  function formatReadingTime(seconds) {
+    if (seconds < 60) {
+      return `${seconds} Second${seconds !== 1 ? "s" : ""} read`;
+    } else if (seconds < 3600) {
+      const minutes = Math.floor(seconds / 60);
+      return `${minutes} Minute${minutes !== 1 ? "s" : ""} read`;
+    } else {
+      const hours = Math.floor(seconds / 3600);
+      const remainingMinutes = Math.floor((seconds % 3600) / 60);
+      return `${hours} Hour${
+        hours !== 1 ? "s" : ""
+      } and ${remainingMinutes} Minute${
+        remainingMinutes !== 1 ? "s" : ""
+      } read`;
+    }
+  }
+
   return (
     <div className="container">
       <div className="mb-3">
@@ -55,6 +72,23 @@ export default function TextForm() {
         Clear
       </button>
       <h3 className="mt-3">Your text summary</h3>
+      <p>
+        {text.trim() === ""
+          ? "0 words"
+          : `${text.split(/\s+/).filter(Boolean).length} words and ${
+              text.length
+            } characters.`}
+      </p>
+
+      <p>
+        {text.trim() === ""
+          ? "0 Seconds read"
+          : text.split(" ").length > 0
+          ? formatReadingTime((text.split(" ").length * 60) / 200)
+          : "0 Seconds read"}
+      </p>
+
+      <h3>Brief summary</h3>
       <p>{text}</p>
     </div>
   );
